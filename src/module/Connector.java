@@ -1,19 +1,27 @@
 package module;
 
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.util.Properties;
 
 public class Connector {
 
     private static Connection connection;
-    private static final String DATABASE = "sqlbuilder";
-    private static final String USERNAME = "root";
-    private static final String PASSWORD = "";
-    private static final String URL = "jdbc:mysql://localhost/"+DATABASE;
 
     public static Connection getConnection() throws UnsupportedOperationException {
+        Properties prop = new Properties();
+        InputStream input = null;
+
         try {
-            connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+            input = new FileInputStream(".config");
+
+            prop.load(input);
+
+            connection = DriverManager.getConnection(prop.getProperty("DB_URL")+prop.getProperty("DB_DATABASE"), prop.getProperty("DB_USERNAME"), prop.getProperty("DB_PASSWORD"));
         } catch (Exception e) {
             e.printStackTrace();
         }
