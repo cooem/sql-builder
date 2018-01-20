@@ -1,7 +1,5 @@
 package module;
 
-import com.sun.org.apache.xpath.internal.operations.Bool;
-
 import java.sql.*;
 
 public class Builder {
@@ -12,7 +10,7 @@ public class Builder {
     private String sql = null;
     private ResultSet tableColumns = null;
 
-    public Boolean insert(String table, String[] column, Array value) {
+    public Boolean insert(String table, String[] column, String[] value) {
         try {
             sql = "INSERT INTO "+table+" VALUES {"+this.makeParamInsert(column)+")";
 
@@ -20,7 +18,7 @@ public class Builder {
 
             stmt = con.prepareStatement(sql);
 
-            this.executeData(tableColumns, column, stmt);
+            this.executeData(tableColumns, column, value);
 
             return true;
         } catch (Exception e) {
@@ -77,25 +75,26 @@ public class Builder {
         stmt.executeUpdate();
     }
 
-    private void executeData(ResultSet tableColumns, String[] column, PreparedStatement stmt, value) throws SQLException {
+    private void executeData(ResultSet tableColumns, String[] column, String[] value) throws SQLException {
         for (int i = 0; i < column.length; i++) {
             while (tableColumns.next()) {
                 if (column[i] == tableColumns.getString("COLUMN_NAME")) {
-                    this.inputData(i, tableColumns.getString("TYPE_NAME"), value);
+                    this.inputData(i, tableColumns.getString("TYPE_NAME"), value[i]);
                 }
             }
         }
         stmt.execute();
     }
 
-    private void executeData(ResultSet tableColumns, String[] column, PreparedStatement stmt, key, value) throws SQLException {
+    private void executeData(ResultSet tableColumns, String[] column, String[] value, String keyValue) throws SQLException {
         for (int i = 0; i < column.length; i++) {
             while (tableColumns.next()) {
                 if (column[i] == tableColumns.getString("COLUMN_NAME")) {
-                    this.inputData(i, tableColumns.getString("TYPE_NAME"), value);
+                    this.inputData(i, tableColumns.getString("TYPE_NAME"), value[i]);
                 }
             }
         }
+        this.inputData(column.length, DataType.VARCHAR.toString(), keyValue);
         stmt.executeUpdate();
     }
 
