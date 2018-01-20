@@ -3,10 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="10cdd59d-2826-451f-b82f-c452c4560144" name="Default" comment="executeData()">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change beforePath="$PROJECT_DIR$/out/production/SQL Builder/Main.class" afterPath="$PROJECT_DIR$/out/production/SQL Builder/Main.class" />
-      <change beforePath="$PROJECT_DIR$/out/production/SQL Builder/module/Builder$1.class" afterPath="$PROJECT_DIR$/out/production/SQL Builder/module/Builder$1.class" />
-      <change beforePath="$PROJECT_DIR$/out/production/SQL Builder/module/Builder.class" afterPath="$PROJECT_DIR$/out/production/SQL Builder/module/Builder.class" />
-      <change beforePath="$PROJECT_DIR$/out/production/SQL Builder/module/Connector.class" afterPath="$PROJECT_DIR$/out/production/SQL Builder/module/Connector.class" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
