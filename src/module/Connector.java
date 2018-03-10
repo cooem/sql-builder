@@ -1,9 +1,7 @@
 package module;
 
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.util.Properties;
@@ -17,7 +15,7 @@ public class Connector {
         InputStream input = null;
 
         try {
-            input = new FileInputStream(".config");
+            input = new FileInputStream(".env");
 
             prop.load(input);
 
