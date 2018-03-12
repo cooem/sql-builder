@@ -27,9 +27,9 @@ public class Builder {
         }
     }
 
-    public Boolean update(String table, String[] column, String[] value, Integer primaryValue) {
+    public Boolean update(String table, String[] column, String[] value, String primaryKey, Integer primaryValue) {
         try {
-            sql = "UPDATE " + table + " SET " + this.makeParamUpdate(column) + " WHERE " + primaryValue + " = ?";
+            sql = "UPDATE " + table + " SET " + this.makeParamUpdate(column) + " WHERE " + primaryKey + " = ?";
 
             tableColumns = this.getTableColumns(table);
 
@@ -74,11 +74,6 @@ public class Builder {
         }
     }
 
-    private ResultSet getTableColumns(String table) throws SQLException {
-        DatabaseMetaData metadata = con.getMetaData();
-        return metadata.getColumns(null, null, table, null);
-    }
-
     private void executeData(DeleteType deleteType, Integer value) throws SQLException {
         switch (deleteType) {
             case HARD:
@@ -95,7 +90,7 @@ public class Builder {
     private void executeData(ResultSet tableColumns, String[] column, String[] value) throws SQLException {
         for (int i = 0; i < column.length; i++) {
             while (tableColumns.next()) {
-                if (column[i] == tableColumns.getString("COLUMN_NAME")) {
+                if (column[i].equals(tableColumns.getString("COLUMN_NAME"))) {
                     this.inputData(i + 1, tableColumns.getString("TYPE_NAME"), value[i]);
                 }
             }
@@ -103,15 +98,15 @@ public class Builder {
         stmt.execute();
     }
 
-    private void executeData(ResultSet tableColumns, String[] column, String[] value, Integer keyValue) throws SQLException {
+    private void executeData(ResultSet tableColumns, String[] column, String[] value, Integer primaryValue) throws SQLException {
         for (int i = 0; i < column.length; i++) {
             while (tableColumns.next()) {
-                if (column[i] == tableColumns.getString("COLUMN_NAME")) {
+                if (column[i].equals(tableColumns.getString("COLUMN_NAME"))) {
                     this.inputData(i + 1, tableColumns.getString("TYPE_NAME"), value[i]);
                 }
             }
         }
-        this.inputData(column.length + 1, DataType.VARCHAR.toString(), String.valueOf(keyValue));
+        this.inputData(column.length + 1, DataType.INT.toString(), String.valueOf(primaryValue));
         stmt.executeUpdate();
     }
 
@@ -129,6 +124,11 @@ public class Builder {
         } else if (dataType.equals("FLOAT")) {
             stmt.setFloat(index, Float.parseFloat(value));
         }
+    }
+
+    private ResultSet getTableColumns(String table) throws SQLException {
+        DatabaseMetaData metadata = con.getMetaData();
+        return metadata.getColumns(null, null, table, null);
     }
 
     private String makeParamInsert(String[] column) {
@@ -156,7 +156,6 @@ public class Builder {
                 prepare += column[i]+" = ? ";
             }
         }
-        System.out.println(prepare);
         return prepare;
     }
 }
